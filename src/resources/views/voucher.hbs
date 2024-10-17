@@ -1,0 +1,272 @@
+<div class="product-container">
+    <div style="justify-content: center;
+    display: flex;
+    color: cornflowerblue;
+    font-size: 40px;">ECOEX ADMIN PANEL</div>
+    <div class="product-heading">
+        <p class="product-heading-text" >Voucher</p>
+        <button class="product-heading-button">CREATE</button>
+    </div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Id</td>
+                <td>Name code</td>
+                <td>Amount</td>
+                <td>Discount_type</td>
+                <td>Status</td>
+                <td>Description</td>
+                <td colspan="2">Action</td>
+            </tr>
+            {{#each data}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.code}}</td>
+                <td>{{this.amount}}</td>
+                <td>{{this.discount_type}}</td>
+                <td>{{this.status}}</td>
+                <td>{{this.description}}</td>
+                <td><button class="action-btn edit-btn" value={{this.id}}>Edit</button></td>
+                <td><button class="action-btn delete-btn" value={{this.id}}>Delete</button></td>
+            </tr>
+            {{/each}}
+    </table>
+    <div class="pop-up-create">
+         <div class='modal-overlay'></div>
+            <div class='modal-container'>
+                <div class='modal-heading'>
+                    <span >Create new voucher</span>
+                    <span class='close-btn' >x</span>
+                </div>
+                <div class='modal-content'>
+                    <div class='form-input'>
+                        <label>Name code</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Name of code'
+                            name="code"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Discount type</label>
+                        <select
+                            id="discount-type-select"
+                            class='modal-input'
+                            placeholder='Discount type of code'
+                            name="discount_type"
+                        >
+                            
+                        </select>
+                    </div>
+                    <div class='form-input'>
+                        <label>Amount</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Amount of code'
+                            name="amount"
+                        ></input>
+                    </div>
+                     <div class='form-input'>
+                        <label>Description</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Description of code'
+                            name="description"
+                        ></input>
+                    </div>
+                </div>
+                <div class='modal-create'>
+                    <button class="createVoucherBtn">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pop-up-update">
+         <div class='modal-overlay'></div>
+            <div class='modal-container'>
+                <div class='modal-heading'>
+                    <span >Update voucher</span>
+                    <span class='close-btn edit-close-btn'>x</span>
+                </div>
+                <div class='modal-content'>
+                    <div class='form-input'>
+                        <label>Name code</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Name of code'
+                            name="code-update"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Discount type</label>
+                        <select
+                            class='modal-input'
+                            placeholder='Discount type of code'
+                            name="discount_type-update"
+                            id="discount-type-select-update"
+                        >
+                            
+                        </select>
+                    </div>
+                    <div class='form-input'>
+                        <label>Amount</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Amount of code'
+                            name="amount-update"
+                        ></input>
+                    </div>
+                     <div class='form-input'>
+                        <label>Description</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Description of code'
+                            name="description-update"
+                        ></input>
+                    </div>
+                </div>
+                <div class='modal-create'>
+                    <button class="updateVoucherBtn">Update</button>
+                </div>
+                <input type="hidden" name="voucher-id-update" value="">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let discount_type =["fixed_product","fixed_cart","percent"];
+    const selectElement = document.getElementById('discount-type-select');
+    const selectElementUpdate = document.getElementById('discount-type-select-update');
+
+
+    discount_type.forEach(function(type){
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        selectElement.appendChild(option);
+        selectElementUpdate.appendChild(option);
+    })
+
+     $('.product-heading-button').click(function(){
+        $('.pop-up-create').addClass('active');
+    })
+    $('.close-btn').click(function(){
+        $('.pop-up-create').removeClass('active');
+    })
+    $('.createVoucherBtn').click(function(){
+         let requestData = {
+            name: $('input[name="code"]').val(),
+            discount_type: $('input[name="discount_type"]').val(),
+            description: $('input[name="description"]').val(),
+            amount: $('input[name="amount"]').val(),
+            description: $('input[name="description"]').val(),
+        };
+        $.ajax({
+            url: '/api/v1/create-voucher',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                if(response.errCode==1){
+                    alert(response.errMessage);
+                } else {
+                    alert("Create success")
+                    window.location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert("Failed to create product. Please try again later.");
+            }
+        });
+    })
+    $('.edit-btn').click(function(){
+        var voucherId = $(this).val(); 
+        $('input[name="voucher-id-update"]').val(voucherId);
+        $.ajax({
+                url: '/api/v1/get-detail-voucher-by-id?id=' + voucherId,
+                type: 'GET',
+                success: function(response) {
+                    if (response.errCode === 0) {
+                        var voucher = response.data;
+                        // Populate form inputs with product details
+                        console.log(voucher)
+                        $('input[name="code-update"]').val(voucher.code);
+                        $('#discount-type-select-update').val(voucher.discount_type);
+                        $('input[name="amount-update"]').val(voucher.amount);
+                        $('input[name="description-update"]').val(voucher.description);
+                        // Show the update pop-up
+                        $('.pop-up-update').addClass('active');
+                    } else {
+                        // Handle error response
+                        alert(response.errMessage);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error(xhr.responseText);
+                    alert("Failed to fetch product details. Please try again later.");
+                }
+            });
+    })
+    $('.updateVoucherBtn').click(function(){
+        let voucherId = $('input[name="voucher-id-update"]').val();
+        let requestData = {
+            id: voucherId,
+            name:$('input[name="code-update"]').val(),
+            discount_type:$('#discount-type-select-update').val(),
+            amount:$('input[name="amount-update"]').val(),
+            description:$('input[name="description-update"]').val(),
+        };
+        $.ajax({
+            url: '/api/v1/update-voucher',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                console.log(response)
+                if(response.errCode==1){
+                    alert(response.errMessage);
+                } else {
+                    alert("Update success")
+                    window.location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr);
+                alert("Failed to create voucher. Please try again later.");
+            }
+        });
+    })
+    $('.edit-close-btn').click(function(){
+        $('.pop-up-update').removeClass('active');
+    })
+     $('.delete-btn').click(function(){
+        var voucherId = $(this).val();
+        $.ajax({
+            url: '/api/v1/delete-voucher',
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: voucherId }),
+            success: function(response) {
+                if(response.errCode == 0){
+                    alert("Delete success");
+                    window.location.reload();
+                } else {
+                    alert(response.errMessage);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr);
+                alert("Failed to delete product. Please try again later.");
+            }
+        });
+    });
+</script>

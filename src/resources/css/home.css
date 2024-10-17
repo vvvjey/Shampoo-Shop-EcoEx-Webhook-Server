@@ -1,0 +1,177 @@
+.abc{
+    color:red;
+}
+.header{
+    height: 58px;
+    width: 100%;
+    background-color:cornflowerblue;
+
+}
+.header-navigator{
+    display: inline-flex;
+    height: 100%;
+    font-size: 30px;
+    margin: 0 20px 0 4px;
+    align-items: center;
+    color: white;
+}
+.product-container{
+
+}
+.product-heading{
+    display: flex;
+    justify-content: space-between;
+}
+.product-heading-text{
+    color: cornflowerblue;
+    font-size: 30px;
+}
+.product-heading-button{
+    height: 40px;
+    align-self: center;
+    border: none;
+    background-color: rgb(214, 225, 236);
+    padding: 8px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+.table tbody{
+    width: 100%;
+}
+.table tbody tr{
+    
+}
+.table tbody tr:first-child td{
+    background-color: rgb(214, 225, 236);
+    padding: 10px 6px;
+    color: black; 
+    font-weight: bold; 
+}
+.table tbody tr td,th{
+    border-bottom-width:0px;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    flex: 1;
+    overflow: hidden;
+    font-size: 20px;
+    color: rgb(90, 90, 90);
+}
+.action-btn{
+    border: none;
+    background-color: rgb(214, 225, 236);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* MODAL */
+.pop-up-create{
+    display: none;
+}
+.pop-up-create.active{
+    display: block;
+}
+.pop-up-update{
+    display: none;
+}
+.pop-up-update.active{
+    display: block;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.modal-container {
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    width: 60%;
+    height: max-content;
+    margin: auto;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.modal-container .modal-heading {
+    text-align: center;
+    padding: 10px;
+    position: relative;
+}
+
+.modal-container .modal-heading span {
+    font-size: 26px;
+    color: cornflowerblue;
+}
+
+.modal-container .modal-heading .close-btn {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    font-size: 22px;
+    color: black;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.modal-container .modal-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.modal-container .modal-content .form-input {
+    padding: 20px;
+    width: 40%;
+}
+
+.modal-container .modal-content .form-input label {
+    color: rgb(67, 87, 122);
+    margin-right: 6px;
+    padding: 5px 0;
+}
+
+.modal-container .modal-content .form-input .modal-input {
+    border: 1px gray solid;
+    padding: 8px 8px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.modal-container .modal-create {
+    text-align: end;
+    margin-right: 50px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.modal-container .modal-create button {
+    border: none;
+    padding: 10px 40px;
+    border-radius: 10px;
+    background-color: cornflowerblue;
+    color: white;
+    cursor: pointer;
+}

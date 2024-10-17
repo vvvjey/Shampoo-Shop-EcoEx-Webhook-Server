@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/home.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+
+    <title>Document</title>
+</head>
+<style>
+    .active {
+    text-decoration: underline;
+    }
+
+    .inactive {
+        text-decoration: none;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+<body>
+    <div class="header">
+        <a href="/" class="header-navigator" id="product">
+            Product
+        </a>
+        <a href="/voucher" class="header-navigator" id="voucher">
+            Voucher
+        </a>
+    </div>
+    {{{body}}}
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const productElement = document.getElementById('product');
+        const voucherElement = document.getElementById('voucher');
+
+        function setActive(element) {
+            element.classList.add('active');
+            element.classList.remove('inactive');
+        }
+
+        function setInactive(element) {
+            element.classList.add('inactive');
+            element.classList.remove('active');
+        }
+
+        // Function to apply correct styles based on current URL
+        function updateStyles() {
+            const currentPath = window.location.pathname;
+            if (currentPath === '/voucher') {
+                setActive(voucherElement);
+                setInactive(productElement);
+            } else {
+                setActive(productElement);
+                setInactive(voucherElement);
+            }
+        }
+
+        // Apply styles on page load
+        updateStyles();
+
+        // Add event listeners for navigation
+        productElement.addEventListener('click', function() {
+            setActive(productElement);
+            setInactive(voucherElement);
+        });
+
+        voucherElement.addEventListener('click', function() {
+            setActive(voucherElement);
+            setInactive(productElement);
+        });
+    });
+</script>

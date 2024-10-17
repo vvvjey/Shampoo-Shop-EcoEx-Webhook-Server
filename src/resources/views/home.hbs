@@ -1,0 +1,317 @@
+<div class="product-container">
+    <div style="justify-content: center;
+    display: flex;
+    color: cornflowerblue;
+    font-size: 40px;">ECOEX ADMIN PANEL</div>
+    <div class="product-heading">
+        <p class="product-heading-text" >Product</p>
+        <button class="product-heading-button">CREATE</button>
+    </div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Img</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Category</td>
+                <td colspan="2">Action</td>
+            </tr>
+            {{#each data}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+                <td><img src="{{this.images.[0].src}}" alt="Product Image" style="max-width: 100px;"></td>
+                <td>{{this.stock_quantity}}</td>
+                <td>{{this.price}}</td>
+                <td>
+                    {{#each this.categories}}
+                        {{this.name}}
+                        {{#unless @last}}, {{/unless}}
+                    {{/each}}
+                </td>
+                <td><button class="action-btn edit-btn" value={{this.id}}>Edit</button></td>
+                <td><button class="action-btn delete-btn" value={{this.id}}>Delete</button></td>
+            </tr>
+            {{/each}}
+    </table>
+    <div class="pop-up-create">
+         <div class='modal-overlay'></div>
+            <div class='modal-container'>
+                <div class='modal-heading'>
+                    <span >Create new product</span>
+                    <span class='close-btn' >x</span>
+                </div>
+                <div class='modal-content'>
+                    <div class='form-input'>
+                        <label>Name</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Name of product'
+                            name="name"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Price</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Price of product'
+                            name="price"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Categories Id</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='CategoryId of product'
+                            name="categoriesId"
+                        ></input>
+                    </div>
+                     <div class='form-input'>
+                        <label>Stock</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Stock of product'
+                            name="stock"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Img source</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Img source of product'
+                            name="img_src"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Description</label>
+                        <textarea 
+                            name="description"
+                            class="modal-input"
+                        >
+                        </textarea>
+                    </div>
+                    <div class='form-input'>
+                        <label>Short description</label>
+                        <textarea 
+                            name="short_description" 
+                            class="modal-input">
+                        </textarea>
+                    </div>
+                </div>
+                <div class='modal-create'>
+                    <button class="createProductBtn">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pop-up-update">
+         <div class='modal-overlay'></div>
+            <div class='modal-container'>
+                <div class='modal-heading'>
+                    <span >Update product</span>
+                    <span class='close-btn edit-close-btn'>x</span>
+                </div>
+                <div class='modal-content'>
+                    <div class='form-input'>
+                        <label>Name</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Name of product'
+                            name="name-update"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Price</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Price of product'
+                            name="price-update"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Categories Id</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='CategoryId of product'
+                            name="categoriesId-update"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Stock</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Stock of product'
+                            name="stock-update"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Img source</label>
+                        <input
+                            type='text'
+                            class='modal-input'
+                            placeholder='Img source of product'
+                            name="img_src-update"
+                        ></input>
+                    </div>
+                    <div class='form-input'>
+                        <label>Description</label>
+                        <textarea 
+                            name="description-update"
+                            class="modal-input"
+                        >
+                        </textarea>
+                    </div>
+                    <div class='form-input'>
+                        <label>Short description</label>
+                        <textarea 
+                            name="short_description-update" 
+                            class="modal-input">
+                        </textarea>
+                    </div>
+                </div>
+                <div class='modal-create'>
+                    <button class="updateProductBtn">Update</button>
+                </div>
+                <input type="hidden" name="product-id-update" value="">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.product-heading-button').click(function(){
+        $('.pop-up-create').addClass('active');
+    })
+    $('.close-btn').click(function(){
+        $('.pop-up-create').removeClass('active');
+    })
+    $('.edit-btn').click(function(){
+    var productId = $(this).val(); // Get the product ID from the button value
+    // AJAX request to fetch product details
+    $('input[name="product-id-update"]').val(productId);
+        $.ajax({
+            url: '/api/v1/get-product-detail-by-id?id=' + productId,
+            type: 'GET',
+            success: function(response) {
+                if (response.errCode === 0) {
+                    var product = response.data;
+                    console.log(product)
+                    // Populate form inputs with product details
+                    $('input[name="name-update"]').val(product.name);
+                    $('input[name="price-update"]').val(product.price);
+                    $('input[name="categoriesId-update"]').val(product.categories[0].id);
+                    $('input[name="stock-update"]').val(product.stock_quantity);
+                    $('input[name="img_src-update"]').val(product.images[0].src);
+                    $('textarea[name="description-update"]').val(product.description);
+                    $('textarea[name="short_description-update"]').val(product.short_description);
+                    
+                    // Show the update pop-up
+                    $('.pop-up-update').addClass('active');
+                } else {
+                    // Handle error response
+                    alert(response.errMessage);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                console.error(xhr.responseText);
+                alert("Failed to fetch product details. Please try again later.");
+            }
+        });
+    });
+    $('.edit-close-btn').click(function(){
+        $('.pop-up-update').removeClass('active');
+    })
+    $('.updateProductBtn').click(function(){
+        let productId = $('input[name="product-id-update"]').val();
+        let requestData = {
+            id: productId,
+            name: $('input[name="name-update"]').val(),
+            price: $('input[name="price-update"]').val(),
+            stock_quantity: $('input[name="stock-update"]').val(),
+            description: $('textarea[name="description-update"]').val(),
+            short_description: $('textarea[name="short_description-update"]').val(),
+            categories: $('input[name="categoriesId-update"]').val(),
+            img_src: $('input[name="img_src-update"]').val()
+        };
+        $.ajax({
+            url: '/api/v1/update-product',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                if(response.errCode==1){
+                    alert(response.errMessage);
+                } else {
+                    alert("Update success")
+                    window.location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr);
+                alert("Failed to create product. Please try again later.");
+            }
+        });
+    })
+    $('.createProductBtn').click(function(){
+         let requestData = {
+            name: $('input[name="name"]').val(),
+            price: $('input[name="price"]').val(),
+            description: $('textarea[name="description"]').val(),
+            short_description: $('textarea[name="short_description"]').val(),
+            categories: $('input[name="categoriesId"]').val(),
+            stock_quantity: $('input[name="stock"]').val(),
+            img_src: $('input[name="img_src"]').val()
+        };
+        $.ajax({
+            url: '/api/v1/create-new-product',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                if(response.errCode==1){
+                    alert(response.errMessage);
+                } else {
+                    alert("Create success")
+                    window.location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert("Failed to create product. Please try again later.");
+            }
+        });
+    })
+    $('.delete-btn').click(function(){
+        var productId = $(this).val();
+        $.ajax({
+            url: '/api/v1/delete-product',
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: productId }),
+            success: function(response) {
+                if(response.errCode == 0){
+                    alert("Delete success");
+                    window.location.reload();
+                } else {
+                    alert(response.errMessage);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr);
+                alert("Failed to delete product. Please try again later.");
+            }
+        });
+    });
+</script>
